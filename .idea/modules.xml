@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/JavaClass.iml" filepath="$PROJECT_DIR$/.idea/JavaClass.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ex1A/ex1A.iml" filepath="$PROJECT_DIR$/ex1A/ex1A.iml" />
+    </modules>
+  </component>
+</project>
