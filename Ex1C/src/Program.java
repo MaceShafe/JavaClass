@@ -14,8 +14,8 @@ public class Program {
         //Var declaration
 
         int customerId= 101;
-        String customerFirstNamae = "John";
-        String customerLastNamae = "Doe";
+        String customerFirstName = "John";
+        String customerLastName = "Doe";
         int thermometerSensorId= 1001;
         String input;
 
@@ -55,7 +55,7 @@ public class Program {
         System.out.print("Enter Temperature at this time:" + time5 );
         System.out.println();
 
-        input = sc.nextLine();
+//        input = sc.nextLine();
 
         //int temp5= Integer.parseInt(input);
         //temp 5 is never used with how this is done
@@ -72,7 +72,7 @@ public class Program {
         double averageTemperature = (double)(timeTemp1+timeTemp2+timeTemp3+timeTemp4+timeTemp5) / time5;
 
         //print customer info and calc.
-        System.out.println("Customer: " + customerId + ". " + customerFirstNamae + " " + customerLastNamae );
+        System.out.println("Customer: " + customerId + ". " + customerFirstName + " " + customerLastName );
         System.out.println("Thermometer: " + thermometerSensorId);
         System.out.println("Average Temperature: " + averageTemperature);
 
