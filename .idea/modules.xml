@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ex1C/Ex1C.iml" filepath="$PROJECT_DIR$/Ex1C/Ex1C.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Ex1D/Ex1D.iml" filepath="$PROJECT_DIR$/Ex1D/Ex1D.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Unit1/Ex1C/Ex1C.iml" filepath="$PROJECT_DIR$/Unit1/Ex1C/Ex1C.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Unit1/Ex1D/Ex1D.iml" filepath="$PROJECT_DIR$/Unit1/Ex1D/Ex1D.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/JavaClass.iml" filepath="$PROJECT_DIR$/.idea/JavaClass.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ex1B/ex1A.iml" filepath="$PROJECT_DIR$/ex1B/ex1A.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Unit1/ex1B/ex1A.iml" filepath="$PROJECT_DIR$/Unit1/ex1B/ex1A.iml" />
     </modules>
   </component>
 </project>
