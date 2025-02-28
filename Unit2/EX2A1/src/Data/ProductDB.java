@@ -1,3 +1,7 @@
+package Data;
+
+import Buisness.Product;
+
 public class ProductDB {
     public static Product getProduct (String code) {
 

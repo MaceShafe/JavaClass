@@ -1,3 +1,5 @@
+package Buisness;
+
 public class Product {
 //instance variables
     public String code = "unknown";
@@ -53,7 +55,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
+        return "Buisness.Product{" +
                 "code='" + code + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +

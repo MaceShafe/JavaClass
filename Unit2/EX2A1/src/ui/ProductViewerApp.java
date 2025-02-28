@@ -1,7 +1,12 @@
+package ui;
+
+import Buisness.Product;
+import Data.ProductDB;
+
 public class ProductViewerApp {
 
     public static void main(String[] args) {
-        System.out.println("Welcome To The Product Viewer App! \n");
+        System.out.println("Welcome To The Buisness.Product Viewer App! \n");
 
         Product product1 = new Product();
         System.out.println(product1);
