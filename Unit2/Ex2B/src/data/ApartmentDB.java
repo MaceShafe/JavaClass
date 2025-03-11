@@ -10,12 +10,12 @@ public class ApartmentDB {
 
         if (id == 1) {
 
-            apartment = new Apartment(1, "123 Main Rd", "101", 1111, 1111.11);
+            apartment = new Apartment(1, BuildingDB.getBuildingById(1), "101", 1111, 1111.11);
 
         }
         if (id == 2) {
 
-            apartment = new Apartment(2, "123 Main Rd", "102", 1111, 1111.11);
+            apartment = new Apartment(2, BuildingDB.getBuildingById(1), "102", 1111, 1111.11);
 
 
         }

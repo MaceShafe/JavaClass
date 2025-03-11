@@ -5,7 +5,7 @@ import data.PersonDB;
 public class Apartment {
     private double price;
     private int Id;
-    private String location;
+    private Building location;
     private String apartmentNum;
     private Person Tenant;
     private int squareFeet;
@@ -15,7 +15,7 @@ public class Apartment {
     public Apartment() {
         this(
                 PersonDB.getNextId(),
-                "unknown",
+                null,
                 "unknown",
                 0,
                 0
@@ -24,7 +24,7 @@ public class Apartment {
     }
 
 
-    public Apartment(int id, String location, String apartmentNum, int squareFeet, double price) {
+    public Apartment(int id, Building location, String apartmentNum, int squareFeet, double price) {
         this.Id = id;
         this.location = location;
         this.apartmentNum = apartmentNum;
@@ -49,11 +49,11 @@ public class Apartment {
         this.Id = id;
     }
 
-    public String getLocation() {
+    public Building getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(Building location) {
         this.location = location;
     }
 
