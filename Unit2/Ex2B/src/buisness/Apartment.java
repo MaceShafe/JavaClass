@@ -12,16 +12,16 @@ public class Apartment {
 
 
 
-    public Apartment() {
-        this(
-                PersonDB.getNextId(),
-                null,
-                "unknown",
-                0,
-                0
-        );
-
-    }
+//    public Apartment() {
+//        this(
+//                PersonDB.getNextId(),
+//                null,
+//                "unknown",
+//                0,
+//                0
+//        );
+//
+//    }
 
 
     public Apartment(int id, Building location, String apartmentNum, int squareFeet, double price) {
@@ -37,33 +37,33 @@ public class Apartment {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+//    public void setPrice(double price) {
+//        this.price = price;
+//    }
 
     public int getId() {
         return Id;
     }
 
-    public void setId(int id) {
-        this.Id = id;
-    }
+//    public void setId(int id) {
+//        this.Id = id;
+//    }
 
     public Building getLocation() {
         return location;
     }
 
-    public void setLocation(Building location) {
-        this.location = location;
-    }
+//    public void setLocation(Building location) {
+//        this.location = location;
+//    }
 
     public String getApartmentNum() {
         return apartmentNum;
     }
 
-    public void setApartmentNum(String apartmentNum) {
-        this.apartmentNum = apartmentNum;
-    }
+//    public void setApartmentNum(String apartmentNum) {
+//        this.apartmentNum = apartmentNum;
+//    }
 
     public Person getTenant() {
         return Tenant;
@@ -77,9 +77,9 @@ public class Apartment {
         return squareFeet;
     }
 
-    public void setSquareFeet(int squareFeet) {
-        this.squareFeet = squareFeet;
-    }
+//    public void setSquareFeet(int squareFeet) {
+//        this.squareFeet = squareFeet;
+//    }
 
     @Override
     public String toString() {

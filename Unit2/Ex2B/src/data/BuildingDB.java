@@ -23,9 +23,8 @@ public class BuildingDB {
 
         return building;
     }
-
-public static int getNextId() {
-    return nextId++;
-}
+//public static int getNextId() {
+//    return nextId++;
+//}
 
 }
