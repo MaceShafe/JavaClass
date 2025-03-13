@@ -4,7 +4,7 @@ import buisness.Person;
 
 public class PersonDB {
 
-    private static int nextId = 3;
+    public static int nextId = 3;
 
     public static Person getPerson(int id) {
     Person person = null;
@@ -24,4 +24,10 @@ public class PersonDB {
     public static int getNextId() {
         return nextId++;
     }
+
+    public static int viewNextId() {
+        return nextId;
+    }
+
+
 }
