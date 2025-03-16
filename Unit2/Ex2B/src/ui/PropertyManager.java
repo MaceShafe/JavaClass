@@ -123,6 +123,11 @@ public class PropertyManager {
             for (int i=1; i<=PersonDB.viewNextId(); i++ ) {
 
                 Person person = PersonDB.getPerson(i);
+
+                if (person == null) {
+                    break;
+                }
+
                 System.out.printf("""
                     Tenant %s %s
                     ------------------------------
