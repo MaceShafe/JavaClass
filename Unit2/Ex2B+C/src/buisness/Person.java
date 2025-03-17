@@ -22,6 +22,9 @@ public class Person {
         this.UserName = userName;
     }
 
+    public Person (int id) {
+        this.Id = id;
+    }
 
     public Person(Person person) {
         this.Id = PersonDB.getNextId();

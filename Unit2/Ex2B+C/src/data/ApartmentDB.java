@@ -4,9 +4,20 @@ import buisness.Apartment;
 
 public class ApartmentDB {
 
+    public static int nextId = 3;
+
+    public static int getNextId() {
+        return nextId++;
+    }
+
+    public static int viewNextId() {
+        return nextId;
+    }
+
     public static Apartment getApartment(int id) {
 
         Apartment apartment = null;
+
 
         if (id == 1) {
 
