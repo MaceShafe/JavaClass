@@ -25,7 +25,10 @@ public class HomeController {
 
             displayOptions();
             String userInput = sc.nextLine();
-            if(userInput.equals("2"))  {
+            if(userInput.equals("1")) {
+                TenantsController.registerPerson();
+            }
+            else if(userInput.equals("2"))  {
                 TenantsController.displayAllPersons();
             }
 

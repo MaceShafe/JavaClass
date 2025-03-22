@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 public class TenantsController {
 
+
     public static void displayPerson(Person person) {
         System.out.printf("""
                     Tenant %s %s
@@ -59,21 +60,57 @@ public class TenantsController {
     public static void registerPerson() {
 
         Person newPerson = new Person();
-        Scanner sc = new Scanner(System.in);;
+        Scanner sc = new Scanner(System.in);
+        ;
+        boolean isValid = false;
+        String userInput = null;
+        String fName = null, lName = null;
 
-        System.out.println("User First Name:");
-        String userInput = sc.nextLine();
-
+        while (!isValid) {
+            System.out.println("User First Name:");
+            userInput = sc.nextLine();
+            isValid = isCharacterLimitReached(userInput, 12);
+            if (!isValid) {
+                System.out.println("Text must be under 12 characters and not empty.");
+            }
+        }
+        isValid = false;
         newPerson.setFirstName(userInput);
-        System.out.println("User Last Name:");
-        userInput = sc.nextLine();
+
+        while (!isValid) {
+            System.out.println("User Last Name:");
+            userInput = sc.nextLine();
+            isValid = isCharacterLimitReached(userInput, 12);
+            if (!isValid) {
+                System.out.println("Text must be under 12 characters and not empty.");
+            }
+        }
+        isValid = false;
         newPerson.setLastName(userInput);
-        System.out.println("Username:");
-        userInput = sc.nextLine();
+        while (!isValid) {
+            System.out.println("Username (if blank, will default to " + newPerson.getFirstName() + "." + newPerson.getLastName() + "." +newPerson.getId() + "):");
+            userInput = sc.nextLine();
+            isValid = isCharacterLimitReached(userInput, 50);
+            if (!isValid) {
+                userInput =  newPerson.getFirstName() + "." + newPerson.getLastName () + "." +newPerson.getId();
+                isValid = true;
+            }
+        }
         newPerson.setUserName(userInput);
+
         System.out.println("New Tenant:");
         displayPerson(newPerson);
+        System.out.println("NOTE: This is currently non-functional and not writing to an array nor file, \n the next assignment is the one that says to do that if I'm correct");
     }
 
 
+
+public static boolean isCharacterLimitReached(String text, int length)  {
+        if (text.length()>length || text.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+
+    }
 }
