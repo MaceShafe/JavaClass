@@ -2,7 +2,6 @@ package ui;
 
 import buisness.Person;
 import data.PersonDB;
-
 import java.util.Scanner;
 
 public class TenantsController {
@@ -28,7 +27,7 @@ public class TenantsController {
     }
 
     public static void displayPerson() {
-        System.out.printf("Please enter the Tenant ID");
+        System.out.print("Please enter the Tenant ID: ");
         boolean validId = false;
 
         while (!validId) {
