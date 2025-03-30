@@ -26,16 +26,13 @@ public class HomeController {
             displayOptions();
             String userInput = sc.nextLine();
             if(userInput.equals("1")) {
-                TenantsController.registerPerson();
+                TenantsController.displayMenuAndHandleUserInput();
             }
             else if(userInput.equals("2"))  {
-                TenantsController.displayAllPersons();
+                ApartmentsController.displayAllApartments();
             }
 
             else if(userInput.equals("3")) {
-                TenantsController.displayPerson();
-            }
-            else if(userInput.equals("4")) {
                 exit = true;
             }
         }
@@ -43,15 +40,14 @@ public class HomeController {
 
     public static void displayOptions() {
         System.out.print("""
-                        + TENANT MANAGEMENT +
-                        ------------------------------
+                        Select one of the following:
+                        
                         Please select one of the following options:
-                            [1] Register New Tenant
-                            [2] Display All Tenants
-                            [3] Display Single Tenant
-                            [4] Exit
-    
-                            Your Choice:""");
+                            [1] Manage Tenants
+                            [2] Display Apartments
+                            [3] Exit
+   
+                        Your Choice:""");
 
     }
 
