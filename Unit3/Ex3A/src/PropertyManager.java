@@ -15,8 +15,8 @@ public class PropertyManager {
 
             PersonDB.loadPersonsFromFile();
 
-//            Person person = new Person(101, "Mason", "Shafer", "M.Shafer");
-//            Tenant tenant = new Tenant(101, "Mason", "Shafer", "M.Shafer", 500.00);
+            Person person = new Person(101, "Mason", "Shafer", "M.Shafer");
+            Tenant tenant = new Tenant(101, "Mason", "Shafer", "M.Shafer", 500.00);
 
 //            createFileIfNotExist();
 //            PersonDB.readLines();
@@ -26,9 +26,7 @@ public class PropertyManager {
 
         }
 
-
-
-
+        
 
     }
 

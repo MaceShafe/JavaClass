@@ -1,6 +1,7 @@
 package ui;
 
 import buisness.Person;
+import buisness.Tenant;
 import data.PersonDB;
 
 import java.util.InputMismatchException;
@@ -67,15 +68,16 @@ public class TenantsController {
 
 
 
-    private static void displayPersonAsTableRow(Person person) {
-        System.out.printf("| %-3d | %-12s | %-12s | %-12s |\n",
-                person.getPersonId(),
-                person.getUserName(),
-                person.getFirstName(),
-                person.getLastName());
+    private static void displayPersonAsTableRow(Tenant tenant) {
+        System.out.printf("| %-3d | %-12s | %-12s | %-12s | %-12s |\n",
+                tenant.getPersonId(),
+                tenant.getUserName(),
+                tenant.getFirstName(),
+                tenant.getLastName());
+                tenant.getCurrentBalance();
     }
 
-    public static void findSinglePerson(Person person) {
+    public static void findSinglePerson(Tenant tenant) {
         System.out.printf("""
                     Tenant %s %s
                     ------------------------------
@@ -83,15 +85,16 @@ public class TenantsController {
                     First Name:%s
                     Last Name:%s
                     User Name:%s
-                        
+                    Current Wage:%s
                     """,
-                person.getFirstName(),
-                person.getLastName(),
+                tenant.getFirstName(),
+                tenant.getLastName(),
 
-                person.getPersonId(),
-                person.getFirstName(),
-                person.getLastName(),
-                person.getUserName());
+                tenant.getPersonId(),
+                tenant.getFirstName(),
+                tenant.getLastName(),
+                tenant.getUserName());
+                tenant.getCurrentBalance();
     }
 
     public static void findSinglePerson(boolean delete) {
@@ -108,7 +111,7 @@ public class TenantsController {
                     if (delete) {
                         confirmTenantDeletion(person); }
                     else {
-                        findSinglePerson(person);
+                        findSinglePerson((Tenant) person);
                     }
                 }
             } catch (InputMismatchException InputMismatchException) {
@@ -145,7 +148,7 @@ public class TenantsController {
         System.out.println(TABLE_LINE);
 
 
-        for (Person tenant : PersonDB.getAllPersons()) {
+        for (Tenant tenant : PersonDB.getAllPersons()) {
                 displayPersonAsTableRow(tenant);
                 System.out.println(TABLE_LINE);
 
@@ -168,7 +171,7 @@ public class TenantsController {
 
     public static void registerPerson() {
 
-        Person newPerson = new Person();
+        Tenant newTenant = new Tenant();
         boolean isValid = false;
         String userInput = null;
         String fName = null, lName = null;
@@ -182,7 +185,7 @@ public class TenantsController {
             }
         }
         isValid = false;
-        newPerson.setFirstName(userInput);
+        newTenant.setFirstName(userInput);
 
         while (!isValid) {
             System.out.println("User Last Name:");
@@ -193,21 +196,33 @@ public class TenantsController {
             }
         }
         isValid = false;
-        newPerson.setLastName(userInput);
+        newTenant.setLastName(userInput);
         while (!isValid) {
-            System.out.println("Username (if blank, will default to " + newPerson.getFirstName() + "." + newPerson.getLastName() + "." +newPerson.getPersonId() + "):");
+            System.out.println("Username (if blank, will default to " + newTenant.getFirstName() + "." + newTenant.getLastName() + "." +newTenant.getPersonId() + "):");
             userInput = sc.nextLine();
             isValid = isCharacterLimitReached(userInput, 50);
             if (!isValid) {
-                userInput =  newPerson.getFirstName() + "." + newPerson.getLastName () + "." +newPerson.getPersonId();
+                userInput =  newTenant.getFirstName() + "." + newTenant.getLastName () + "." +newTenant.getPersonId();
                 isValid = true;
             }
         }
-        newPerson.setUserName(userInput);
-
+        isValid = false;
+        newTenant.setUserName(userInput);
+            while (!isValid) {
+                System.out.println("Current Tenant Wage: ");
+                userInput = sc.nextLine();
+                try {
+                    double wage = Double.parseDouble(userInput);
+                    isValid = true;
+                    newTenant.setCurrentBalance(wage);
+                }
+                catch (NumberFormatException e) {
+                    System.out.println("Please insert an amount.");
+                }
+            }
         System.out.println("New Tenant:");
-        PersonDB.addPerson(newPerson);
-        findSinglePerson(newPerson);}
+        PersonDB.addPerson(newTenant);
+        findSinglePerson(newTenant);}
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
