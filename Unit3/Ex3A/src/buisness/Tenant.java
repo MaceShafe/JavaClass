@@ -11,7 +11,22 @@ public class Tenant extends Person{
         super(personID, firstName, lastName, userName);
         this.currentBalance = currentBalance;
     }
+    public Tenant () {
 
+    }
 
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
 
+    public void setCurrentBalance(double currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() +
+                "currentBalance=" + currentBalance +
+                '}';
+    }
 }
