@@ -1,4 +1,5 @@
 package buisness;
+import java.time.LocalDateTime;
 
 
 
@@ -6,9 +7,9 @@ public class Tenant extends Person{
 
     private double currentBalance;
 
-    public Tenant (int personID, String firstName, String lastName, String userName,
+    public Tenant (int personID, LocalDateTime CreationDate, String firstName, String lastName, String userName,
                    double currentBalance) {
-        super(personID, firstName, lastName, userName);
+        super(personID, CreationDate, firstName, lastName, userName);
         this.currentBalance = currentBalance;
     }
     public Tenant () {

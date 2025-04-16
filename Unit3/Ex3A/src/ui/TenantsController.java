@@ -1,9 +1,10 @@
 package ui;
 
-import buisness.Person;
 import buisness.Tenant;
-import data.PersonDB;
+import data.TenantDB;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -55,10 +56,10 @@ public class TenantsController {
         }
 
         switch (choice) {
-            case 1 -> registerPerson();
-            case 2 -> displayAllPersons();
-            case 3 -> findSinglePerson(false);
-            case 4 -> findSinglePerson(true);
+            case 1 -> registerTenant();
+            case 2 -> displayAllTenants();
+            case 3 -> findSingleTenant(false);
+            case 4 -> findSingleTenant(true);
 
         }
         return choice;
@@ -68,16 +69,16 @@ public class TenantsController {
 
 
 
-    private static void displayPersonAsTableRow(Tenant tenant) {
-        System.out.printf("| %-3d | %-12s | %-12s | %-12s | %-12s |\n",
+    private static void displayTenantAsTableRow(Tenant tenant) {
+        System.out.printf("| %-3d | %-14s | %-12s | %-12s | $%,-14.2f |\n",
                 tenant.getPersonId(),
                 tenant.getUserName(),
                 tenant.getFirstName(),
-                tenant.getLastName());
-                tenant.getCurrentBalance();
+                tenant.getLastName(),
+                tenant.getCurrentBalance());
     }
 
-    public static void findSinglePerson(Tenant tenant) {
+    public static void findSingleTenant(Tenant tenant) {
         System.out.printf("""
                     Tenant %s %s
                     ------------------------------
@@ -85,7 +86,8 @@ public class TenantsController {
                     First Name:%s
                     Last Name:%s
                     User Name:%s
-                    Current Wage:%s
+                    Current Wage: $%,.2f
+                    Date added to DB: %tD
                     """,
                 tenant.getFirstName(),
                 tenant.getLastName(),
@@ -93,25 +95,27 @@ public class TenantsController {
                 tenant.getPersonId(),
                 tenant.getFirstName(),
                 tenant.getLastName(),
-                tenant.getUserName());
-                tenant.getCurrentBalance();
+                tenant.getUserName(),
+                tenant.getCurrentBalance(),
+                tenant.getCreationDate());
     }
 
-    public static void findSinglePerson(boolean delete) {
+
+    public static void findSingleTenant(boolean delete) {
         System.out.print("Please enter the Tenant ID: ");
 
 
             try {
                 int tenantId = sc.nextInt();
-                Person person = PersonDB.getPersonByID(tenantId);
+                Tenant tenant = TenantDB.getTenantByID(tenantId);
 
-                if (person == null) {
+                if (tenant == null) {
                     System.out.println("That tenant was not found! ");
                 } else {
                     if (delete) {
-                        confirmTenantDeletion(person); }
+                        confirmTenantDeletion(tenant); }
                     else {
-                        findSinglePerson((Tenant) person);
+                        findSingleTenant(tenant);
                     }
                 }
             } catch (InputMismatchException InputMismatchException) {
@@ -121,14 +125,14 @@ public class TenantsController {
 
     }
 
-    private static void confirmTenantDeletion(Person tenant) {
+    private static void confirmTenantDeletion(Tenant tenant) {
         System.out.printf("Are you sure you want to delete (%d) '%s %s'? (y/n)", tenant.getPersonId(), tenant.getFirstName(), tenant.getLastName()) ;
 
         String choice = sc.next();
 
 
         if (choice.equalsIgnoreCase("y")) {
-            PersonDB.removePerson(tenant);
+            TenantDB.removeTenant(tenant);
             System.out.println("Tenant successfully removed, goodbye!");
         } else if (sc.next().equalsIgnoreCase("n")) {
             System.out.println("Tenant not removed!");
@@ -137,19 +141,20 @@ public class TenantsController {
 
     }
 
-    public static void displayAllPersons() {
+    public static void displayAllTenants() {
 
-        String TABLE_LINE = "----------------------------------------------------";
+        String TABLE_LINE = "-----------------------------------------------------------------------";
 
 
-    if (!PersonDB.getAllPersons().isEmpty()) {
+    if (!TenantDB.getAllTenants().isEmpty()) {
         System.out.println(TABLE_LINE);
-        System.out.printf("| %-3s | %-12s | %-12s | %-12s |\n", "Id", "User Name", "First Name", "Last Name" );
+        System.out.printf("| %-3s | %-14s | %-12s | %-12s | %-14s |\n", "Id", "User Name", "First Name", "Last Name", "Current Balance" );
         System.out.println(TABLE_LINE);
 
 
-        for (Tenant tenant : PersonDB.getAllPersons()) {
-                displayPersonAsTableRow(tenant);
+        for (Tenant tenant : TenantDB.getAllTenants()) {
+
+                displayTenantAsTableRow(tenant);
                 System.out.println(TABLE_LINE);
 
             }
@@ -159,17 +164,17 @@ public class TenantsController {
 
         System.out.println();
 
-//        for (int i = 1; i<= PersonDB.getNextId(); i++ ) {
+//        for (int i = 1; i<= TenantDB.getNextId(); i++ ) {
 //
-//            Person person = PersonDB.getPersonByID(i);
+//            Tenant person = TenantDB.getTenantByID(i);
 //
 //            if (person != null){
-//                displaySinglePerson(person);
+//                displaySingleTenant(person);
 //            }
 //        }
     }
 
-    public static void registerPerson() {
+    public static void registerTenant() {
 
         Tenant newTenant = new Tenant();
         boolean isValid = false;
@@ -220,14 +225,14 @@ public class TenantsController {
                     System.out.println("Please insert an amount.");
                 }
             }
-        System.out.println("New Tenant:");
-        PersonDB.addPerson(newTenant);
-        findSinglePerson(newTenant);}
+            newTenant.setCreationDate();
+
+            System.out.println("New Tenant:");
+        TenantDB.addTenant(newTenant);
+        findSingleTenant(newTenant);}
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-//        System.out.println("NOTE: This is currently non-functional and not writing to an array nor file, \n the next assignment is the one that says to do that if I'm correct");
 
 
     }

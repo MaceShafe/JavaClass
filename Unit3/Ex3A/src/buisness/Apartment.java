@@ -1,7 +1,5 @@
 package buisness;
 
-import data.PersonDB;
-
 public class Apartment extends BuisnessEntity {
     private double price;
     private int Id;
