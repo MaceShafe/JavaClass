@@ -10,9 +10,9 @@ import java.io.IOException;
 public class FutureValueApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FutureValueApp.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(FutureValueApp.class.getResource("FutureValueView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 350, 200);
+        stage.setTitle("Comc-2740: Future Value App");
         stage.setScene(scene);
         stage.show();
     }
