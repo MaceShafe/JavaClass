@@ -1,8 +1,11 @@
 
+
 /*-----( Import needed libraries )-----*/
 #include <SPI.h>
 #include <Ethernet.h>
 #include <SimpleDHT.h>
+#include <TimeLib.h>
+
 // #include <Wire.h>
 
 /*-----( Declare Constants and Pin Numbers )-----*/
@@ -32,21 +35,29 @@ char pageName[] = "/api/sensorreadings";
 //init ethernet client
 EthernetClient client;
 //declare http Post request data
-char json[41]; //must be large enough to hold json payload
+char json[71]; //must be large enough to hold json payload
+char jsonSearchStr [] = "\"dateTime\":\"";
+
+
 #define delayMillis 10000UL
 byte prevTempReading = 0;
 unsigned long thisMillis = 0;
 unsigned long lastMillis = 0;
-
+//Stack reading to send server
+byte tempStack[50];
+time_t timeStack[50];
+int stackIndex = -1;
 
 void setup()   /****** SETUP: RUNS ONCE ******/ 
 {
   // Open serial communications and wait for port to open:
-  // Serial.begin(115200);
+  Serial.begin(115200);
+
+
 
   // start the Ethernet connection and the server:
   if (Ethernet.begin(mac) == 0) {
-    // Serial.println("Failed to configure Ethernet using DHCP");
+    Serial.println("Failed to configure Ethernet using DHCP");
     
     Ethernet.begin(mac,arduinoIp,gateway,subnet);
   }
@@ -56,7 +67,7 @@ void setup()   /****** SETUP: RUNS ONCE ******/
 
 void loop()   /*----( LOOP: RUNS OVER AND OVER AGAIN )----*/
 {
- Ethernet.maintain();
+Ethernet.maintain();
 
   thisMillis = millis();
   if (thisMillis - lastMillis > delayMillis) {
@@ -68,16 +79,42 @@ void loop()   /*----( LOOP: RUNS OVER AND OVER AGAIN )----*/
     err = dht11.read(pinDHT11, &currTempReading, &currHumidReading, NULL);
 
     if ((currTempReading <= prevTempReading-2) || (currTempReading >= prevTempReading + 2)) {
-      sprintf(json, "{'SensorID':%d,'Value':%d}", SENSORID, (int) currTempReading); //cast currTempReading to int
-      // Serial.println(json);
-      // if (!postPage(json)) 
-        // Serial.print(F("Fail "));
-      // else
-        // Serial.print(F("Pass"));
-   
-      prevTempReading=currTempReading;
+
+      if (stackIndex<50) {
+        stackIndex++;
+        tempStack [stackIndex] = currTempReading;
+        prevTempReading=currTempReading;
+
+        if (timeStatus()==timeSet)
+          timeStack[stackIndex] = now();
+        else
+          timeStack[stackIndex] = 0;
+      }
     }
-  }
+
+      byte postSucceeded= true;
+
+      while (postSucceeded && stackIndex >= 0) {
+        time_t t =timeStack[stackIndex];
+        if (t==0) {
+        sprintf(json, "{'SensorID':%d,'Value':%d}", SENSORID, (int) tempStack[stackIndex]); 
+        }
+        else
+        sprintf(json, "{'SensorID':%d,'Value':%d,'DateTime':'%04d-%02d-%02dT%02d:%02d:%02d'}", 
+          SENSORID, (int) tempStack[stackIndex], year(t), month(t), day(t),hour(t),minute(t), second(t)); 
+
+
+        Serial.println(json);
+        postSucceeded = postPage(json);
+        if (!postSucceeded) {
+          Serial.println(F("Fail "));
+          }
+        else {
+          Serial.println(F("Pass"));
+          stackIndex--;
+        }
+      }
+    }
 
 
 } // END Loop
@@ -89,10 +126,15 @@ void loop()   /*----( LOOP: RUNS OVER AND OVER AGAIN )----*/
 byte postPage(char* json)
 {
   int inChar;
-  // Serial.println("postPage() connecting...");
+
+  char timChArr[35];
+  bool serverTimeFound = false;
+
+
+  Serial.println("postPage() connecting...");
 
   if (client.connect(serverIp, serverPort)) {
-    // Serial.println("postPage() connected");
+    Serial.println("postPage() connected");
 
     // send http header
     client.println("POST /propertymonitor/api/sensorreadings HTTP/1.1");
@@ -108,7 +150,7 @@ byte postPage(char* json)
   }
   else
   {
-    // Serial.println(F("postPage() connect failed"));
+    Serial.println(F("postPage() connect failed"));
     return 0;
   }
 
@@ -116,26 +158,79 @@ byte postPage(char* json)
 
   while(client.connected())
   {
+
+    int jsonSearchIndex=0;
+    int jsonSearchStrLen=strlen(jsonSearchStr);
+
+    //char jsonSearchStr [] = "\"dateTime\":\"";
+
+    int timeIndex = 0;
+
     while(client.available())
     {
       inChar = client.read();
-      // Serial.write(inChar);
-      connectLoop = 0;
+      
+      Serial.write(inChar);
+      if(jsonSearchIndex<jsonSearchStrLen) {            //if jsonSearchStr hasnt been found
+        if (inChar == jsonSearchStr[jsonSearchIndex]) //if inChar matches next char in jsonSearchStr
+          jsonSearchIndex++;
+        else
+              jsonSearchIndex=0;
+      }
+      else {
+          if (!serverTimeFound && inChar != '"') {
+            timChArr[timeIndex] = inChar;
+            timeIndex++;
+          }
+          else {
+            timChArr[timeIndex] = '/0';
+            serverTimeFound = true;
+          }
+      }
+        connectLoop = 0;
+
     }
 
     delay(1);
     connectLoop++;
     if(connectLoop > 10000)
     {
-      // Serial.println();
-      // Serial.println(F("Timeout"));
+      Serial.println();
+      Serial.println(F("Timeout"));
       client.stop();
     }
   }
 
-  // Serial.println();
-  // Serial.println(F("disconnecting."));
+  Serial.println();
+  Serial.println(F("disconnecting."));
   client.stop();
+  String timStr(timChArr);
+    Serial.println(timStr);
+  // Serial.println(timStr.substring(0,4));
+  // Serial.println(timStr.substring(5,7));
+  // Serial.println(timStr.substring(8,10));
+  //     Serial.println(timStr.substring(11,13)); // hour
+  //     Serial.println(timStr.substring(14,16)); // minute
+  //     Serial.println(timStr.substring(17,19)); // second
+
+  setTime( 
+    timStr.substring(11,13).toInt(),
+    timStr.substring(14,16).toInt(),
+    timStr.substring(17,19).toInt(),
+    timStr.substring(8,10).toInt(),
+    timStr.substring(5,7).toInt(),
+    timStr.substring(0,4).toInt());
+
+    delay(2000);
+  Serial.println();
+  Serial.println("Time function results");
+  Serial.println(year());
+  Serial.println(month());
+  Serial.println(day());
+  Serial.println(hour());
+  Serial.println(minute());
+  Serial.println(second());
+
   return 1;
 }
 // //
